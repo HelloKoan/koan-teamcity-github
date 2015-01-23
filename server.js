@@ -44,10 +44,10 @@ function parsePush(repository, branch){
 
 function triggerBuild(buildId){
 	console.log('Triggering build for ' + buildId);
-	
+
 	var url = 'http://teamcity.koan.is/httpAuth/action.html?add2Queue=' + buildId;
 	request.get(url).auth('github', '8xC@z$0vfkgp');
 }
 
-app.listen(3001);
+app.listen(80);
 console.log('Server running at http://localhost:3001');
