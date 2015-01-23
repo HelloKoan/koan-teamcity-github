@@ -82,7 +82,7 @@ function triggerBuild(buildId){
 	console.log('Triggering build for ' + buildId);
 
 	var url = 'https://teamcity.koan.is/httpAuth/action.html?add2Queue=' + buildId;
-	request.get(url).auth('github', '8xC@z$0vfkgp');
+	request.get(url).auth(process.env.teamcityUser, process.env.teamcityPassword);
 }
 
 app.listen(process.env.PORT);
