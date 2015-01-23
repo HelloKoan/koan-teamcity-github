@@ -49,5 +49,5 @@ function triggerBuild(buildId){
 	request.get(url).auth('github', '8xC@z$0vfkgp');
 }
 
-app.listen(80);
-console.log('Server running at http://localhost:3001');
+app.listen(process.env.PORT);
+console.log('Server running at http://localhost:' + process.env.PORT);
