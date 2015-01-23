@@ -42,7 +42,39 @@ function parsePush(repository, branch){
 					triggerBuild('Owletter_Build');
 					break;
 			}
-			break;			
+			break;
+            
+		case 'AdminOld':
+			switch(branch){
+				case 'Legacy':
+					triggerBuild('ECommerce_AdminLegacy_Build');
+					break;
+			}
+			break;
+            
+		case 'BathUnwindOld':
+			switch(branch){
+				case 'master':
+					triggerBuild('Flow_BathUnwindLegacy_Build');
+					break;
+			}
+			break;
+            
+		case 'WarehouseOld':
+			switch(branch){
+				case 'master':
+					triggerBuild('Flow_LegacyWarehouse');
+					break;
+			}
+			break;
+            
+		case 'GoogleAdwordsOld':
+			switch(branch){
+				case 'master':
+					triggerBuild('Flow_LegacyGoogleAdwords');
+					break;
+			}
+			break;
 	}
 }
 
