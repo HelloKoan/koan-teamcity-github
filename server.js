@@ -45,7 +45,7 @@ function parsePush(repository, branch){
 function triggerBuild(buildId){
 	console.log('Triggering build for ' + buildId);
 
-	var url = 'http://teamcity.koan.is/httpAuth/action.html?add2Queue=' + buildId;
+	var url = 'https://teamcity.koan.is/httpAuth/action.html?add2Queue=' + buildId;
 	request.get(url).auth('github', '8xC@z$0vfkgp');
 }
 
