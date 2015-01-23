@@ -12,12 +12,16 @@ app.get('/', function(req, res) {
 app.post('/', function(request, response){	
 	var data = request.body;
 
+	if(typeof data.repository === "undefined"){
+		response.send(200);
+	}
+
 	var repository = data.repository.name;
 	var ref = data.ref;
 
 	if(typeof ref === "undefined"){
 		// not a commit
-		return;
+		response.send(200);
 	}
 
 	var branch = ref.replace('refs/heads/', '');
