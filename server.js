@@ -63,7 +63,7 @@ function parsePush(repository, branch){
 		case 'WarehouseOld':
 			switch(branch){
 				case 'master':
-					triggerBuild('Flow_LegacyWarehouse');
+					triggerBuild('Flow_LegacyWarehouse_Build');
 					break;
 			}
 			break;
@@ -71,7 +71,7 @@ function parsePush(repository, branch){
 		case 'GoogleAdwordsOld':
 			switch(branch){
 				case 'master':
-					triggerBuild('Flow_LegacyGoogleAdwords');
+					triggerBuild('Flow_LegacyGoogleAdwords_Build');
 					break;
 			}
 			break;
