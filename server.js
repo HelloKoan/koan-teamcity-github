@@ -1,5 +1,6 @@
 var request = require('request');
 var express = require('express');
+var crypto = require('crypto');
 var app = express();
 
 app.use(express.urlencoded()); 
@@ -11,6 +12,13 @@ app.get('/', function(req, res) {
 
 app.post('/', function(request, response){	
 	var data = request.body;
+	
+	var hmacDigest = crypto.createHmac('sha1', process.env.githubSecret).update(JSON.stringify(data)).digest('hex');
+	calculatedSignature = 'sha1=' + hmacDigest;
+	if (calculatedSignature != request.headers['x-hub-signature']) {
+		// not correct github secret
+		response.send(403);
+	}
 
 	if(typeof data.repository === "undefined"){
 		response.send(200);
