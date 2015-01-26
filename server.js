@@ -26,7 +26,7 @@ app.post('/', function(request, response){
 
 	var branch = ref.replace('refs/heads/', '');
 
-	response.send('{"repository: "' + data.repository.name + '", "branch: "' + branch + '"}');
+	response.send('{"repository: "' + repository + '", "branch: "' + branch + '"}');
 
 	parsePush(repository, branch);
 });
@@ -79,7 +79,7 @@ function parsePush(repository, branch){
 }
 
 function triggerBuild(buildId){
-	console.log('Triggering build for ' + buildId);
+	response.send('Triggering build for ' + buildId);
 
 	var url = 'https://teamcity.koan.is/httpAuth/action.html?add2Queue=' + buildId;
 	request.get(url).auth(process.env.teamcityUser, process.env.teamcityPassword);
