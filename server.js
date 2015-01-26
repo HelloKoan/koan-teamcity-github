@@ -44,6 +44,14 @@ function parsePush(repository, branch){
 			}
 			break;
             
+		case 'Cocktail':
+			switch(branch){
+				case 'master':
+					triggerBuild('Cocktail_Build');
+					break;
+			}
+			break;
+            
 		case 'AdminOld':
 			switch(branch){
 				case 'Legacy':
