@@ -91,6 +91,16 @@ function parsePush(repository, branch){
 					break;
 			}
 			break;
+            
+		case 'Flow':
+			switch(branch){
+				case 'Koan':
+					triggerBuild('Flow_AdminKoanStaging');
+					triggerBuild('Flow_WarehouseKoan_Build');
+					triggerBuild('Flow_FrontendKoan_Build');
+					break;
+			}
+			break;
 	}
 }
 
