@@ -95,7 +95,7 @@ function parsePush(repository, branch){
 		case 'Flow':
 			switch(branch){
 				case 'Koan':
-					triggerBuild('Flow_AdminKoanStaging');
+					triggerBuild('Flow_AdminKoanStaging_Build');
 					triggerBuild('Flow_WarehouseKoan_Build');
 					triggerBuild('Flow_FrontendKoan_Build');
 					break;
