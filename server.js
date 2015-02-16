@@ -106,6 +106,14 @@ function parsePush(repository, branch){
 					break;
 			}
 			break;
+			
+		case 'seg-app':
+			switch(branch){
+				case 'master':
+					triggerBuild('Seg_Web_Prod_Build');
+					break;
+			}
+			break;
 	}
 }
 
