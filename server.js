@@ -109,7 +109,7 @@ function parsePush(repository, branch){
 			
 		case 'seg-app':
 			switch(branch){
-				case 'master':
+				case 'production':
 					triggerBuild('Seg_Web_Prod_Build');
 					break;
 			}
