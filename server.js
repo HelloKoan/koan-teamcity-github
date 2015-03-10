@@ -45,9 +45,11 @@ function parsePush(repository, branch){
 			switch(branch){
 				case 'master':
 					triggerBuild('Owletter_StagingBuild');
+					triggerBuild('Owletter_Staging');
 					break;
 				case 'production':
 					triggerBuild('Owletter_Build');
+					triggerBuild('Owletter_Production');
 					break;
 			}
 			break;
