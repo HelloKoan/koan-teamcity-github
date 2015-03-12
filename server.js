@@ -114,18 +114,23 @@ function parsePush(repository, branch){
 				case 'production':
 					triggerBuild('Seg_Web_Prod_Build');
 					break;
-				case 'master':
-					triggerBuild('Seg_Staging_Build');
+				default:
+					triggerBuild('Seg_Staging_Build', branch);
 					break;
 			}
 			break;
 	}
 }
 
-function triggerBuild(buildId){
+function triggerBuild(buildId, branch){
 	console.log('Triggering build for ' + buildId);
 
 	var url = 'https://teamcity.koan.is/httpAuth/action.html?add2Queue=' + buildId;
+	
+	if(branch){
+		url += '&branchName=' + branch;
+	}
+	
 	request.get(url).auth(process.env.teamcityUser, process.env.teamcityPassword);
 }
 
