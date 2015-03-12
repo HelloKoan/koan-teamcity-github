@@ -25,18 +25,33 @@ app.post('/', function(request, response){
 	}
 
 	var repository = data.repository.name;
-	var ref = data.ref;
+	
+	var eventType = request.headers['X-GitHub-Event'];
+	
+	if(eventType == 'push'){
+		var ref = data.ref;
 
-	if(typeof ref === "undefined"){
-		// not a commit
-		response.send(200);
+		if(typeof ref === "undefined"){
+			// not a commit
+			response.send(200);
+		}
+	
+		var branch = ref.replace('refs/heads/', '');
+
+		response.send('{"repository: "' + repository + '", "branch: "' + branch + '"}');
+
+		parsePush(repository, branch);
 	}
-
-	var branch = ref.replace('refs/heads/', '');
-
-	response.send('{"repository: "' + repository + '", "branch: "' + branch + '"}');
-
-	parsePush(repository, branch);
+	else if(eventType == 'pull_request'){
+		var id = data.number;
+		
+		response.send('{"repository: "' + repository + '", "pull_request: "' + id + '"}');
+		
+		parsePush(repository, id);
+	}
+	else {
+		response.send(400);
+	}
 });
 
 function parsePush(repository, branch){
