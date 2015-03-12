@@ -50,7 +50,7 @@ app.post('/', function(request, response){
 		parsePush(repository, id);
 	}
 	else {
-		response.send(400);
+		response.send(400, request.headers);
 	}
 });
 
