@@ -26,7 +26,7 @@ app.post('/', function(request, response){
 
 	var repository = data.repository.name;
 	
-	var eventType = request.headers['X-GitHub-Event'];
+	var eventType = request.headers['x-github-event'];
 	
 	if(eventType == 'push'){
 		var ref = data.ref;
