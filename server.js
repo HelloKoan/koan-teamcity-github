@@ -37,10 +37,14 @@ app.post('/', function(request, response){
 		}
 	
 		var branch = ref.replace('refs/heads/', '');
+		
+		var wasDeleted = ref.deleted;
 
-		response.send('{"repository: "' + repository + '", "branch: "' + branch + '"}');
+		response.send('{"repository: "' + repository + '", "branch: "' + branch + '", "deleted: "' + deleted +'"'}');
 
-		parsePush(repository, branch);
+		if(!wasDeleted){	
+			parsePush(repository, branch);
+		}
 	}
 	else if(eventType == 'pull_request'){
 		var id = data.number;
