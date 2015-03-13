@@ -38,9 +38,9 @@ app.post('/', function(request, response){
 	
 		var branch = ref.replace('refs/heads/', '');
 		
-		var wasDeleted = ref.deleted;
+		var wasDeleted = data.deleted;
 
-		response.send('{"repository: "' + repository + '", "branch: "' + branch + '", "deleted: "' + deleted + '"}');
+		response.send('{"repository": "' + repository + '", "branch": "' + branch + '", "deleted": "' + deleted + '"}');
 
 		if(!wasDeleted){	
 			parsePush(repository, branch);
