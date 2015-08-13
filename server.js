@@ -138,6 +138,14 @@ function parsePush(repository, branch){
 					break;
 			}
 			break;
+			
+		case 'Drinkstuff':
+			switch(branch){
+				case 'staging':
+					triggerBuild('Flow_LegacyDrinkstuffStaging_Build');
+					break;
+			}
+			break;
 	}
 }
 
