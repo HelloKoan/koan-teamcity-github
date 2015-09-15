@@ -106,7 +106,10 @@ function parsePush(repository, branch){
 		case 'WarehouseOld':
 			switch(branch){
 				case 'master':
-					triggerBuild('Flow_LegacyWarehouse_Build');
+					triggerBuild('Flow_LegacyWarehouse_Staging');
+					break;
+				case 'production':
+					triggerBuild('Flow_LegacyWarehouse_Production');
 					break;
 			}
 			break;
