@@ -83,8 +83,11 @@ function parsePush(repository, branch){
             
 		case 'AdminOld':
 			switch(branch){
-				case 'Legacy':
-					triggerBuild('ECommerce_AdminLegacy_Build');
+				case 'master':
+					triggerBuild('ECommerce_AdminLegacy_Staging');
+					break;
+				case 'production':
+					triggerBuild('ECommerce_AdminLegacy_Production');
 					break;
 			}
 			break;
