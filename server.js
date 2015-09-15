@@ -92,6 +92,9 @@ function parsePush(repository, branch){
 		case 'BathUnwindOld':
 			switch(branch){
 				case 'master':
+					triggerBuild('Flow_BathUnwindLegacy_Staging');
+					break;
+				case 'production':
 					triggerBuild('Flow_BathUnwindLegacy_Build');
 					break;
 			}
