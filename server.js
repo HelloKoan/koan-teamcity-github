@@ -95,7 +95,7 @@ function parsePush(repository, branch){
 					triggerBuild('Flow_BathUnwindLegacy_Staging');
 					break;
 				case 'production':
-					triggerBuild('Flow_BathUnwindLegacy_Build');
+					triggerBuild('Flow_BathUnwindLegacy_Production');
 					break;
 			}
 			break;
