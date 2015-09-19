@@ -155,6 +155,14 @@ function parsePush(repository, branch){
 					break;
 			}
 			break;
+			
+		case 'Cliniko-MailChimp':
+			switch(branch){
+				case 'master':
+					triggerBuild('Koan_ClinikoMailChimp');
+					break;
+			}
+			break;
 	}
 }
 
