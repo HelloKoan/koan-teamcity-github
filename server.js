@@ -139,11 +139,8 @@ function parsePush(repository, branch){
 			
 		case 'seg-app':
 			switch(branch){
-				case 'production':
-					triggerBuild('Seg_Web_Prod_Build');
-					break;
 				default:
-					triggerBuild('Seg_Staging_Build', branch);
+					triggerBuild('Seg_Web_BuildTest', branch);
 					break;
 			}
 			break;
