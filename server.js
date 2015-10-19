@@ -153,6 +153,9 @@ function parsePush(repository, branch){
 				case 'staging':
 					triggerBuild('Flow_LegacyDrinkstuffStaging_Build');
 					break;
+				case 'production':
+					triggerBuild('Flow_LegacyDrinkstuffStaging_BuildProduction');
+					break;
 			}
 			break;
 			
