@@ -163,6 +163,17 @@ function parsePush(repository, branch){
 					break;
 			}
 			break;
+		
+		case 'CrocodileApp':
+			switch(branch){
+				case 'master':
+					triggerBuild('Crocodile_StagingBuildAndDeployToAzureWebsite');
+					break;
+				case 'Production':
+					triggerBuild('Crocodile_BuildDeployToAzureWebsite');
+					break;
+			}
+			break;
 	}
 }
 
