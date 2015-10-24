@@ -147,7 +147,7 @@ function parsePush(repository, branch){
 			
 		case 'Drinkstuff':
 			switch(branch){
-				case 'staging':
+				case 'master':
 					triggerBuild('Flow_LegacyDrinkstuffStaging_Build');
 					break;
 				case 'production':
