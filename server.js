@@ -18,15 +18,24 @@ app.post('/', function(request, response){
 	if (calculatedSignature != request.headers['x-hub-signature']) {
 		// not correct github secret
 		response.send(403);
+		return;
 	}
 
 	if(typeof data.repository === "undefined"){
 		response.send(200);
+		return;
 	}
 
 	var repository = data.repository.name;
 	
 	var eventType = request.headers['x-github-event'];
+	
+	var committer = data.head_commit.committer.name;
+	
+	if(committer == 'teamcity'){
+		response.send(200);
+		return;
+	}
 	
 	if(eventType == 'push'){
 		var ref = data.ref;
@@ -34,6 +43,7 @@ app.post('/', function(request, response){
 		if(typeof ref === "undefined"){
 			// not a commit
 			response.send(200);
+			return;
 		}
 	
 		var branch = ref.replace('refs/heads/', '');
@@ -55,6 +65,7 @@ app.post('/', function(request, response){
 	}
 	else {
 		response.send(400, request.headers);
+		return;
 	}
 });
 
