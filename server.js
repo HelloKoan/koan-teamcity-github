@@ -72,7 +72,7 @@ app.post('/', function(request, response){
 function parsePush(repository, branch){
 	switch(repository){
 		case 'Owletter':
-			triggerBuild('Owletter_Website_BuildTest');
+			triggerBuild('Owletter_Website_BuildTest', branch);
 			break;
             
 		case 'Cocktail':
