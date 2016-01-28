@@ -176,6 +176,14 @@ function parsePush(repository, branch){
 					break;
 			}
 			break;
+			
+		case 'UmBristol-CI-Demo':
+			switch(branch){
+				case 'Production':
+					triggerBuild('UmBristolCI_ProductionBuildDeployToAzureWebsite');
+					break;
+			}
+			break;		
 	}
 }
 
