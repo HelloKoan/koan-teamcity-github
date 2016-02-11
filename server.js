@@ -45,6 +45,11 @@ app.post('/', function(request, response){
 			response.send(200);
 			return;
 		}
+		
+		if(ref.indexOf('refs/tags') > -1){
+			response.send('Tag push ignored');
+			return;
+		}
 	
 		var branch = ref.replace('refs/heads/', '');
 		
