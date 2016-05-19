@@ -132,7 +132,6 @@ function parsePush(repository, branch){
 		case 'Flow':
 			switch(branch){
 				case 'Koan':
-					triggerBuild('Flow_AdminKoanStaging_Build');
 					triggerBuild('Flow_WarehouseKoan_Build');
 					triggerBuild('Flow_FrontendKoan_Build');
 					break;
@@ -140,6 +139,9 @@ function parsePush(repository, branch){
 					triggerBuild('Flow_AdminBarmansStaging_Build');
 					triggerBuild('Flow_WarehouseBarmans_Build');
 					triggerBuild('Flow_FrontendDrinkstuff_Build');
+					break;
+				case 'develop':
+					triggerBuild('Flow_AdminKoanStaging_Build');
 					break;
 			}
 			break;
