@@ -142,6 +142,7 @@ function parsePush(repository, branch){
 					break;
 				case 'develop':
 					triggerBuild('Flow_AdminKoanStaging_Build');
+					triggerBuild('Flow_BathUnwindLegacy_StagingFlow');
 					break;
 			}
 			break;
