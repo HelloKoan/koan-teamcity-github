@@ -21,9 +21,6 @@ app.post('/', function(request, response){
 		return;
 	}
 
-	response.send('{"githubSecret: "' + process.env.githubSecret + '", "gitlabSecret: "' + process.env.gitlabSecret + '"}');
-	return;
-
 	if (typeof gitHubEventType !== 'undefined' && gitHubEventType != '')
 	{
 		/* GITHUB */
@@ -78,7 +75,7 @@ app.post('/', function(request, response){
 			response.send(400, request.headers);
 			return;
 		/* GITLAB */
-		if (!checkSecretIsOk(process.env.gitlabSecret, request.headers['x-gitlab-signature'])) return;
+		//if (!checkSecretIsOk(process.env.gitlabSecret, request.headers['x-gitlab-signature'])) return;
 
 		var repository = data.repository.name;
 		var eventType = data.object_kind;
