@@ -24,7 +24,7 @@ app.post('/', function(request, response){
 	if (typeof gitHubEventType !== 'undefined' && gitHubEventType != '')
 	{
 		/* GITHUB */
-		if (!checkSecretIsOk(process.env.githubSecret, request.headers['x-hub-signature'])) return;
+		//if (!checkSecretIsOk(process.env.githubSecret, request.headers['x-hub-signature'])) return;
 
 		var repository = data.repository.name;
 		var committer = data.head_commit.committer.name;
@@ -72,6 +72,8 @@ app.post('/', function(request, response){
 
 	} else if (typeof gitLabEventType !== 'undefined' && gitHubEventType != '') 
 	{
+			response.send(400, request.headers);
+			return;
 		/* GITLAB */
 		if (!checkSecretIsOk(process.env.gitlabSecret, request.headers['x-gitlab-signature'])) return;
 
