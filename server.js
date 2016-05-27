@@ -24,8 +24,10 @@ app.post('/', function(request, response){
 	if (typeof gitHubEventType !== 'undefined' && gitHubEventType != '')
 	{
 		/* GITHUB */
-		//if (!checkSecretIsOk(process.env.githubSecret, request.headers['x-hub-signature'])) return;
-
+		if (checkSecretIsOk(data, process.env.githubSecret, request.headers['x-hub-signature']) == false) {
+			return;
+		}
+		
 		var repository = data.repository.name;
 		var committer = data.head_commit.committer.name;
 		
@@ -73,7 +75,9 @@ app.post('/', function(request, response){
 	} else if (typeof gitLabEventType !== 'undefined' && gitHubEventType != '') 
 	{
 		/* GITLAB */
-		//if (!checkSecretIsOk(process.env.gitlabSecret, request.headers['x-gitlab-signature'])) return;
+		if (checkSecretIsOk(data, process.env.gitlabSecret, request.headers['x-gitlab-signature']) == false) {
+			return;
+		}
 
 		var repository = data.repository.name;
 		var eventType = data.object_kind;
@@ -207,14 +211,6 @@ function parsePush(repository, branch){
 					break;
 			}
 			break;
-			
-		case 'Cliniko-MailChimp':
-			switch(branch){
-				case 'master':
-					triggerBuild('Koan_ClinikoMailChimp');
-					break;
-			}
-			break;
 		
 		case 'CrocodileApp':
 			switch(branch){
@@ -249,7 +245,7 @@ function triggerBuild(buildId, branch){
 	request.get(url).auth(process.env.teamcityUser, process.env.teamcityPassword);
 }
 
-function checkSecretIsOk(secret, header) {
+function checkSecretIsOk(data, secret, header) {
 	var hmacDigest = crypto.createHmac('sha1', secret).update(JSON.stringify(data)).digest('hex');
 	calculatedSignature = 'sha1=' + hmacDigest;
 	
