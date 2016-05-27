@@ -21,6 +21,9 @@ app.post('/', function(request, response){
 		return;
 	}
 
+	response.send('{"githubSecret: "' + process.env.githubSecret + '", "gitlabSecret: "' + process.env.gitlabSecret + '"}');
+	return;
+
 	if (typeof gitHubEventType !== 'undefined' && gitHubEventType != '')
 	{
 		/* GITHUB */
