@@ -25,6 +25,7 @@ app.post('/', function(request, response){
 	{
 		/* GITHUB */
 		if (checkSecretIsOk(data, process.env.githubSecret, request.headers['x-hub-signature']) == false) {
+			response.send(403);
 			return;
 		}
 		
@@ -76,6 +77,7 @@ app.post('/', function(request, response){
 	{
 		/* GITLAB */
 		if (checkSecretIsOk(data, process.env.gitlabSecret, request.headers['x-gitlab-signature']) == false) {
+			response.send(403);
 			return;
 		}
 
@@ -251,7 +253,6 @@ function checkSecretIsOk(data, secret, header) {
 	
 	if (calculatedSignature != header) {
 		// not correct secret
-		response.send(403);
 		return false;
 	}
 
