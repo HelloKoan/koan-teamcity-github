@@ -13,62 +13,97 @@ app.get('/', function(req, res) {
 app.post('/', function(request, response){	
 	var data = request.body;
 	
-	var hmacDigest = crypto.createHmac('sha1', process.env.githubSecret).update(JSON.stringify(data)).digest('hex');
-	calculatedSignature = 'sha1=' + hmacDigest;
-	if (calculatedSignature != request.headers['x-hub-signature']) {
-		// not correct github secret
-		response.send(403);
-		return;
-	}
-
+	var gitHubEventType = request.headers['x-github-event'];
+	var gitLabEventType = request.headers['x-gitlab-event'];
+	
 	if(typeof data.repository === "undefined"){
 		response.send(200);
 		return;
 	}
 
-	var repository = data.repository.name;
-	
-	var eventType = request.headers['x-github-event'];
-	
-	var committer = data.head_commit.committer.name;
-	
-	if(committer == 'teamcity'){
-		response.send(200);
-		return;
-	}
-	
-	if(eventType == 'push'){
-		var ref = data.ref;
+	if (typeof(gitHubEventType) !== 'undefined' && gitHubEventType != '')
+	{
+		/* GITHUB */
+		checkSecretIsOk(process.env.githubSecret, request.headers['x-hub-signature']);
 
-		if(typeof ref === "undefined"){
-			// not a commit
+		var repository = data.repository.name;
+		var committer = data.head_commit.committer.name;
+		
+		if(committer == 'teamcity'){
 			response.send(200);
 			return;
 		}
 		
-		if(ref.indexOf('refs/tags') > -1){
-			response.send('Tag push ignored');
+		if(gitHubEventType == 'push'){
+			var ref = data.ref;
+
+			if(typeof ref === "undefined"){
+				// not a commit
+				response.send(200);
+				return;
+			}
+			
+			if(ref.indexOf('refs/tags') > -1){
+				response.send('Tag push ignored');
+				return;
+			}
+		
+			var branch = ref.replace('refs/heads/', '');
+			
+			var wasDeleted = data.deleted;
+
+			response.send('{"repository": "' + repository + '", "branch": "' + branch + '", "deleted": "' + wasDeleted + '"}');
+
+			if(!wasDeleted){	
+				parsePush(repository, branch);
+			}
+		}
+		else if(gitHubEventType == 'pull_request'){
+			var id = data.number;
+			
+			response.send('{"repository: "' + repository + '", "pull_request: "' + id + '"}');
+			
+			parsePush(repository, id);
+		}
+		else {
+			response.send(400, request.headers);
 			return;
 		}
-	
-		var branch = ref.replace('refs/heads/', '');
+
+	} else if (typeof(gitLabEventType) !== 'undefined' && gitHubEventType != '') 
+	{
+		/* GITLAB */
+		checkSecretIsOk(process.env.gitlabSecret, request.headers['x-gitlab-token']);
+
+		var repository = data.repository.name;
+		var eventType = data.object_kind;
+
+		if (eventType == 'push') {
+			var ref = data.ref;
+
+			if(typeof ref === "undefined"){
+				// not a commit
+				response.send(200);
+				return;
+			}
+			
+			if(ref.indexOf('refs/tags') > -1){
+				response.send('Tag push ignored');
+				return;
+			}
 		
-		var wasDeleted = data.deleted;
+			var branch = ref.replace('refs/heads/', '');
+			
+			var commits = data.total_commits_count;
 
-		response.send('{"repository": "' + repository + '", "branch": "' + branch + '", "deleted": "' + wasDeleted + '"}');
+			response.send('{"repository": "' + repository + '", "branch": "' + branch + '", "commits": "' + commits + '"}');
 
-		if(!wasDeleted){	
-			parsePush(repository, branch);
+			if (commits > 0) {	
+				parsePush(repository, branch);
+			}
 		}
-	}
-	else if(eventType == 'pull_request'){
-		var id = data.number;
-		
-		response.send('{"repository: "' + repository + '", "pull_request: "' + id + '"}');
-		
-		parsePush(repository, id);
-	}
-	else {
+
+	} else {
 		response.send(400, request.headers);
 		return;
 	}
@@ -212,6 +247,16 @@ function triggerBuild(buildId, branch){
 	}
 	
 	request.get(url).auth(process.env.teamcityUser, process.env.teamcityPassword);
+}
+
+function checkSecretIsOk(secret, header) {
+	var hmacDigest = crypto.createHmac('sha1', secret).update(JSON.stringify(data)).digest('hex');
+	calculatedSignature = 'sha1=' + hmacDigest;
+	if (calculatedSignature != header) {
+		// not correct secret
+		response.send(403);
+		return;
+	}
 }
 
 app.listen(process.env.PORT);
