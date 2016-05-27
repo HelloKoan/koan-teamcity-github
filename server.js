@@ -76,7 +76,7 @@ app.post('/', function(request, response){
 	} else if (typeof gitLabEventType !== 'undefined' && gitHubEventType != '') 
 	{
 		/* GITLAB */
-		if (checkSecretIsOk(data, process.env.gitlabSecret, request.headers['x-gitlab-signature']) == false) {
+		if (checkSecretIsOk(data, process.env.gitlabSecret, request.headers['x-gitlab-token']) == false) {
 			response.send(403);
 			return;
 		}
