@@ -10,6 +10,10 @@ app.get('/', function(req, res) {
 	res.send('Hello World\n');
 });
 
+process.on('uncaughtException', function (error) {
+	response.send(500, error.stack);
+});
+
 app.post('/', function(request, response){	
 	var data = request.body;
 	
@@ -24,7 +28,7 @@ app.post('/', function(request, response){
 	if (typeof(gitHubEventType) !== 'undefined' && gitHubEventType != '')
 	{
 		/* GITHUB */
-		checkSecretIsOk(process.env.githubSecret, request.headers['x-hub-signature']);
+		if (!checkSecretIsOk(process.env.githubSecret, request.headers['x-hub-signature'])) return;
 
 		var repository = data.repository.name;
 		var committer = data.head_commit.committer.name;
@@ -73,7 +77,7 @@ app.post('/', function(request, response){
 	} else if (typeof(gitLabEventType) !== 'undefined' && gitHubEventType != '') 
 	{
 		/* GITLAB */
-		checkSecretIsOk(process.env.gitlabSecret, request.headers['x-gitlab-token']);
+		if (!checkSecretIsOk(process.env.gitlabSecret, request.headers['x-gitlab-signature'])) return;
 
 		var repository = data.repository.name;
 		var eventType = data.object_kind;
@@ -252,11 +256,14 @@ function triggerBuild(buildId, branch){
 function checkSecretIsOk(secret, header) {
 	var hmacDigest = crypto.createHmac('sha1', secret).update(JSON.stringify(data)).digest('hex');
 	calculatedSignature = 'sha1=' + hmacDigest;
+	
 	if (calculatedSignature != header) {
 		// not correct secret
 		response.send(403);
-		return;
+		return false;
 	}
+
+	return true;
 }
 
 app.listen(process.env.PORT);
