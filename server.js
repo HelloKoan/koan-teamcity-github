@@ -13,9 +13,6 @@ app.get('/', function(req, res) {
 app.post('/', function(request, response){	
 	var data = request.body;
 	
-	response.send('{"githubSecret: "' + process.env.githubSecret + '", "gitlabSecret: "' + process.env.gitlabSecret + '"}');
-	return;
-
 	var gitHubEventType = request.headers['x-github-event'];
 	var gitLabEventType = request.headers['x-gitlab-event'];
 	
