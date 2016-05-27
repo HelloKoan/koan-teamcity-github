@@ -10,11 +10,6 @@ app.get('/', function(req, res) {
 	res.send('Hello World\n');
 });
 
-process.on('uncaughtException', function (error) {
-	response.send(error.stack);
-	response.send(500, error.stack);
-});
-
 app.post('/', function(request, response){	
 	var data = request.body;
 	
@@ -26,7 +21,7 @@ app.post('/', function(request, response){
 		return;
 	}
 
-	if (typeof(gitHubEventType) !== 'undefined' && gitHubEventType != '')
+	if (typeof gitHubEventType !== 'undefined' && gitHubEventType != '')
 	{
 		/* GITHUB */
 		if (!checkSecretIsOk(process.env.githubSecret, request.headers['x-hub-signature'])) return;
@@ -75,7 +70,7 @@ app.post('/', function(request, response){
 			return;
 		}
 
-	} else if (typeof(gitLabEventType) !== 'undefined' && gitHubEventType != '') 
+	} else if (typeof gitLabEventType !== 'undefined' && gitHubEventType != '') 
 	{
 		/* GITLAB */
 		if (!checkSecretIsOk(process.env.gitlabSecret, request.headers['x-gitlab-signature'])) return;
