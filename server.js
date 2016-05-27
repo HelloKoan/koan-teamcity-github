@@ -11,6 +11,7 @@ app.get('/', function(req, res) {
 });
 
 process.on('uncaughtException', function (error) {
+	response.send(error.stack);
 	response.send(500, error.stack);
 });
 
