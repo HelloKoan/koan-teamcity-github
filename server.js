@@ -248,6 +248,10 @@ function triggerBuild(buildId, branch){
 }
 
 function checkSecretIsOk(data, secret, header) {
+	if (header == secret) {
+		return true;
+	}
+	
 	var hmacDigest = crypto.createHmac('sha1', secret).update(JSON.stringify(data)).digest('hex');
 	calculatedSignature = 'sha1=' + hmacDigest;
 	
