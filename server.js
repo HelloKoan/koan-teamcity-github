@@ -187,7 +187,7 @@ function parsePush(repository, branch){
 					break;
 				case 'master-pseudo':
 					triggerBuild('Flow_AdminKoan_Build');
-					triggerBuild('Flow_BathUnwindLegacy_Build');
+					triggerBuild('Flow_FrontendKoan_BathUnwindLegacy');
 					break;
 			}
 			break;
