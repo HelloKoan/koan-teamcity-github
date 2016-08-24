@@ -180,21 +180,6 @@ function parsePush(repository, branch){
 			}
 			break;
 			
-		case 'seg-app':
-			switch(branch){
-				default:
-					triggerBuild('Seg_Web_BuildTest', branch);
-					break;
-			}
-			break;
-			
-		case 'MailChimpV3API':
-			switch(branch){
-				default:
-					triggerBuild('MailChimpV3API_BuildTestPackage', branch);
-					break;
-			}
-			
 		case 'Drinkstuff':
 			switch(branch){
 				case 'master':
