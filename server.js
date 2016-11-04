@@ -117,47 +117,6 @@ app.post('/', function(request, response){
 
 function parsePush(repository, branch){
 	switch(repository){
-		case 'AdminOld':
-			switch(branch){
-				case 'master':
-					triggerBuild('ECommerce_AdminLegacy_Staging');
-					break;
-				case 'production':
-					triggerBuild('ECommerce_AdminLegacy_Production');
-					break;
-			}
-			break;
-            
-		case 'BathUnwindOld':
-			switch(branch){
-				case 'master':
-					triggerBuild('Flow_BathUnwindLegacy_Staging');
-					break;
-				case 'production':
-					triggerBuild('Flow_BathUnwindLegacy_Production');
-					break;
-			}
-			break;
-            
-		case 'WarehouseOld':
-			switch(branch){
-				case 'master':
-					triggerBuild('Flow_LegacyWarehouse_Staging');
-					break;
-				case 'production':
-					triggerBuild('Flow_LegacyWarehouse_Production');
-					break;
-			}
-			break;
-            
-		case 'GoogleAdwordsOld':
-			switch(branch){
-				case 'master':
-					triggerBuild('Flow_LegacyGoogleAdwords_Build');
-					break;
-			}
-			break;
-            
 		case 'Flow':
 			switch(branch){
 				case 'Koan':
@@ -173,13 +132,14 @@ function parsePush(repository, branch){
 					triggerBuild('Flow_AdminKoanStaging_Build');
 					triggerBuild('Flow_BathUnwindLegacy_StagingFlow');
 					break;
-				case 'master-pseudo':
-					triggerBuild('Flow_AdminKoan_Build');
-					triggerBuild('Flow_FrontendKoan_BathUnwindLegacy');
+				case 'master':
+					triggerBuild('Flow_WarehouseKoan_Koan');
+					//triggerBuild('Flow_AdminKoan_Build');
+					//triggerBuild('Flow_FrontendKoan_BathUnwindLegacy');
 					break;
 			}
 			break;
-			
+		
 		case 'MailChimpV3API':
  			switch(branch){
  				default:
@@ -196,26 +156,7 @@ function parsePush(repository, branch){
 					triggerBuild('Flow_LegacyDrinkstuffStaging_BuildProduction');
 					break;
 			}
-			break;
-		
-		case 'CrocodileApp':
-			switch(branch){
-				case 'master':
-					triggerBuild('Crocodile_StagingBuildAndDeployToAzureWebsite');
-					break;
-				case 'Production':
-					triggerBuild('Crocodile_BuildDeployToAzureWebsite');
-					break;
-			}
-			break;
-			
-		case 'UmBristol-CI-Demo':
-			switch(branch){
-				case 'Production':
-					triggerBuild('UmBristolCI_ProductionBuildDeployToAzureWebsite');
-					break;
-			}
-			break;		
+			break;	
 	}
 }
 
