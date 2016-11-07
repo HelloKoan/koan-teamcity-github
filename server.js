@@ -126,7 +126,7 @@ function parsePush(repository, branch){
 					break;
 				case 'master':
 					triggerBuild('Flow_WarehouseKoan_Koan');
-					//triggerBuild('Flow_AdminKoan_Build');
+					triggerBuild('Flow_AdminKoan_Build');
 					//triggerBuild('Flow_FrontendKoan_BathUnwindLegacy');
 					break;
 			}
