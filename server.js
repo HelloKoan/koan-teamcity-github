@@ -3,19 +3,19 @@ var express = require('express');
 var crypto = require('crypto');
 var app = express();
 
-app.use(express.urlencoded()); 
+app.use(express.urlencoded());
 app.use(express.json());
 
 app.get('/', function(req, res) {
 	res.send('Hello World\n');
 });
 
-app.post('/', function(request, response){	
+app.post('/', function(request, response){
 	var data = request.body;
-	
+
 	var gitHubEventType = request.headers['x-github-event'];
 	var gitLabEventType = request.headers['x-gitlab-event'];
-	
+
 	if(typeof data.repository === "undefined"){
 		response.send(200);
 		return;
@@ -28,15 +28,15 @@ app.post('/', function(request, response){
 			response.send(403);
 			return;
 		}
-		
+
 		var repository = data.repository.name;
 		var committer = data.head_commit.committer.name;
-		
+
 		if(committer == 'teamcity'){
 			response.send(200);
 			return;
 		}
-		
+
 		if(gitHubEventType == 'push'){
 			var ref = data.ref;
 
@@ -45,27 +45,27 @@ app.post('/', function(request, response){
 				response.send(200);
 				return;
 			}
-			
+
 			if(ref.indexOf('refs/tags') > -1){
 				response.send('Tag push ignored');
 				return;
 			}
-		
+
 			var branch = ref.replace('refs/heads/', '');
-			
+
 			var wasDeleted = data.deleted;
 
 			response.send('{"repository": "' + repository + '", "branch": "' + branch + '", "deleted": "' + wasDeleted + '"}');
 
-			if(!wasDeleted){	
+			if(!wasDeleted){
 				parsePush(repository, branch);
 			}
 		}
 		else if(gitHubEventType == 'pull_request'){
 			var id = data.number;
-			
+
 			response.send('{"repository: "' + repository + '", "pull_request: "' + id + '"}');
-			
+
 			parsePush(repository, id);
 		}
 		else {
@@ -73,7 +73,7 @@ app.post('/', function(request, response){
 			return;
 		}
 
-	} else if (typeof gitLabEventType !== 'undefined' && gitHubEventType != '') 
+	} else if (typeof gitLabEventType !== 'undefined' && gitHubEventType != '')
 	{
 		/* GITLAB */
 		if (checkSecretIsOk(data, process.env.gitlabSecret, request.headers['x-gitlab-token']) == false) {
@@ -81,8 +81,8 @@ app.post('/', function(request, response){
 			return;
 		}
 
-		var repository = data.repository.name;
-		var eventType = data.object_kind;
+		var repository = data.project.name.toLowerCase();
+		var eventType = data.event_name;
 
 		if (eventType == 'push') {
 			var ref = data.ref;
@@ -92,19 +92,21 @@ app.post('/', function(request, response){
 				response.send(200);
 				return;
 			}
-			
+
+			ref = ref.toLowerCase();
+
 			if(ref.indexOf('refs/tags') > -1){
 				response.send('Tag push ignored');
 				return;
 			}
-		
+
 			var branch = ref.replace('refs/heads/', '');
-			
+
 			var commits = data.total_commits_count;
 
 			response.send('{"repository": "' + repository + '", "branch": "' + branch + '", "commits": "' + commits + '"}');
 
-			if (commits > 0) {	
+			if (commits > 0) {
 				parsePush(repository, branch);
 			}
 		}
@@ -117,14 +119,14 @@ app.post('/', function(request, response){
 
 function parsePush(repository, branch){
 	switch(repository){
-		case 'Flow':
+		case 'flow':
 			switch(branch){
 				case 'develop':
 					triggerBuild('Flow');
 					break;
 			}
 			break;
-		
+
 		case 'MailChimpV3API':
  			switch(branch){
  				default:
@@ -138,11 +140,11 @@ function triggerBuild(buildId, branch){
 	console.log('Triggering build for ' + buildId);
 
 	var url = 'https://teamcity.koan.is/httpAuth/action.html?add2Queue=' + buildId;
-	
+
 	if(branch){
 		url += '&branchName=' + branch;
 	}
-	
+
 	request.get(url).auth(process.env.teamcityUser, process.env.teamcityPassword);
 }
 
@@ -150,10 +152,10 @@ function checkSecretIsOk(data, secret, header) {
 	if (header == secret) {
 		return true;
 	}
-	
+
 	var hmacDigest = crypto.createHmac('sha1', secret).update(JSON.stringify(data)).digest('hex');
 	calculatedSignature = 'sha1=' + hmacDigest;
-	
+
 	if (calculatedSignature != header) {
 		// not correct secret
 		return false;
