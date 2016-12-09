@@ -119,15 +119,8 @@ function parsePush(repository, branch){
 	switch(repository){
 		case 'Flow':
 			switch(branch){
-				case 'Barmans':
-					triggerBuild('Flow_AdminBarmansStaging_Build');
-					triggerBuild('Flow_WarehouseBarmans_Build');
-					triggerBuild('Flow_FrontendDrinkstuff_Build');
-					break;
-				case 'master':
-					triggerBuild('Flow_WarehouseKoan_Koan');
-					triggerBuild('Flow_AdminKoan_Build');
-					//triggerBuild('Flow_FrontendKoan_BathUnwindLegacy');
+				case 'develop':
+					triggerBuild('Flow');
 					break;
 			}
 			break;
@@ -138,17 +131,6 @@ function parsePush(repository, branch){
  					triggerBuild('MailChimpV3API_BuildTestPackage', branch);
  					break;
  			}
-			
-		case 'Drinkstuff':
-			switch(branch){
-				case 'master':
-					triggerBuild('Flow_LegacyDrinkstuffStaging_Build');
-					break;
-				case 'production':
-					triggerBuild('Flow_LegacyDrinkstuffStaging_BuildProduction');
-					break;
-			}
-			break;	
 	}
 }
 
