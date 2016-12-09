@@ -73,7 +73,7 @@ app.post('/', function(request, response){
 			return;
 		}
 
-	} else if (typeof gitLabEventType !== 'undefined' && gitHubEventType != '')
+	} else if (typeof gitLabEventType !== 'undefined' && gitLabEventType != '')
 	{
 		/* GITLAB */
 		if (checkSecretIsOk(data, process.env.gitlabSecret, request.headers['x-gitlab-token']) == false) {
