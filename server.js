@@ -121,7 +121,7 @@ function parsePush(repository, branch){
 	switch(repository){
 		case 'flow':
 			switch(branch){
-				case 'develop':
+				case 'master':
 					triggerBuild('Flow');
 					break;
 			}
